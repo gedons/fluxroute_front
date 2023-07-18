@@ -4,8 +4,8 @@ import Index from "../views/Index.vue";
 // import Tasks from "../views/Tasks.vue";
 // import TaskView from "../views/TaskView.vue";
 // import Dashboard from "../views/Dashboard.vue";
-// import Login from "../views/Login.vue";
-// import Register from "../views/Register.vue";
+import Login from "../views/Login.vue";
+import CreateAccount from "../views/CreateAccount.vue";
 // import MainLayout from "../components/MainLayout.vue";
 // import NotFound from "../views/NotFound.vue";
 
@@ -18,18 +18,17 @@ const routes = [
         component: Index
     },
 
-    // {
-    //     path: "/login",
-    //     name: 'Login',
-    //     meta: {isGuest: true},
-    //     component: Login
-    // },
+    {
+        path: "/login",
+        name: 'Login',       
+        component: Login
+    },
 
-    // {
-    //     path: "/register",
-    //     name: 'Register',
-    //     component: Register
-    // },
+    {
+        path: "/CreateAccount",
+        name: 'CreateAccount',
+        component: CreateAccount
+    },
 
     // {
     //     path: "/",

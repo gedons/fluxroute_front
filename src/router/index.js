@@ -36,7 +36,7 @@ const routes = [
         path: "/",
         redirect: "/dashboard",
         component: UserLayout,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, requiredRole: "user" },
         children: [
             { path: "/dashboard", name: "Dashboard", component: Dashboard },
            
@@ -47,7 +47,7 @@ const routes = [
         path: "/",
         redirect: "/driver/dashboard",
         component: DriverLayout,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, requiredRole: "driver" },
         children: [
             { path: "/driver/dashboard", name: "Driver", component: Driver },
            
@@ -58,7 +58,7 @@ const routes = [
         path: "/",
         redirect: "/admin/dashboard",
         component: AdminLayout,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, requiredRole: "admin" },
         children: [
             { path: "/admin/dashboard", name: "Admin", component: Admin },
            
@@ -76,39 +76,46 @@ const routes = [
     });
 
     router.beforeEach((to, from, next) => {
-        // If the user is already authenticated and tries to access the login page,
-        // redirect them to their respective dashboard based on their role
-        if (store.getters.isLoggedIn && to.name === "Login") {
-        switch (store.getters.getUserRole) {
-            case "user":
-            next({ name: "Dashboard" });
-            break;
-            case "driver":
-            next({ name: "Driver" });
-            break;
-            case "admin":
-            next({ name: "Admin" });
-            break;
-            default:
-            next();
-        }
-        } else if (to.meta.requiresAuth && !store.getters.isLoggedIn) {
-        // If the route requires authentication but the user is not logged in,
-        // redirect them to the login page
-        next({ name: "Login" });
-        } else {
-        next();
-        }
+        const requiresAuth = to.meta.requiresAuth;
+
+        if (requiresAuth && !store.getters.isLoggedIn) {
+            // If the route requires authentication but the user is not logged in,
+            // redirect them to the login page
+            next({ name: "Login" });
+          } else if (requiresAuth) {
+                // If the route requires authentication and the user is logged in,
+                // check if the user has the required role to access the route
+                const requiredRole = to.meta.requiredRole;
+
+                if (requiredRole && store.getters.getUserRole !== requiredRole) {
+                // If the user does not have the required role, redirect them to an error page or a fallback route
+                next({ name: "Login" });
+                } else {
+                // If the user has the required role or the route does not specify a required role, allow access
+                next();
+                }
+            } else if (store.getters.isLoggedIn && to.name === "Login") {
+                // If the user is already authenticated and tries to access the login page,
+                // redirect them to their respective dashboard based on their role
+                switch (store.getters.getUserRole) {
+                  case "user":
+                    next({ name: "Dashboard" });
+                    break;
+                  case "driver":
+                    next({ name: "Driver" });
+                    break;
+                  case "admin":
+                    next({ name: "Admin" });
+                    break;
+                  default:
+                    next();
+                }
+              } else {
+                // For public routes that do not require authentication, allow access
+                next();
+              }
     });
 
-//   router.beforeEach((to, from, next) => {
-//     if (to.meta.requiresAuth && !store.state.user.token) {
-//       next({ name: "Login" });
-//     } else if (store.state.user.token && to.meta.isGuest) {
-//       next({ name: "Dashboard" });
-//     } else {
-//       next();
-//     }
-//   });
+
 
 export default router;

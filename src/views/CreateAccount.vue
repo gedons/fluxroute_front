@@ -105,55 +105,55 @@
                   <router-link :to="{name: 'Login'}" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded">Login</router-link>
                 </div> 
       
-                <div class="lg:col-span-2 py-4">
-                  <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
+                <div class="lg:col-span-2 py-4">                 
+				   <form @submit="CreateAccount" class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
                     <div class="md:col-span-5">
-                      <label for="full_name">Full Name</label>
-                      <input type="text" name="full_name" id="full_name" class="h-10 border mt-1 rounded px-4 w-full bg-gray-100" value="" />
+                      <label for="name">Full Name</label>
+                      <input type="text" name="name" id="name" v-model="user.name" class="h-10 border mt-1 rounded px-4 w-full bg-gray-100"/>
                     </div>
       
                     <div class="md:col-span-5">
                       <label for="email">Email Address</label>
-                      <input type="text" name="email" id="email" class="h-10 border mt-1 rounded px-4 w-full bg-gray-100" value="" placeholder="email@domain.com" />
+                      <input type="text" name="email" id="email" v-model="user.email" class="h-10 border mt-1 rounded px-4 w-full bg-gray-100" placeholder="email@domain.com" />
                     </div>
 
                     <div class="md:col-span-3">
                         <label for="password">Password</label>
-                        <input type="password" name="password" id="password" class="h-10 border mt-1 rounded px-4 w-full bg-gray-100" value="" placeholder="" />
+                        <input type="password" name="password" id="password" v-model="user.password" class="h-10 border mt-1 rounded px-4 w-full bg-gray-100" placeholder="Password" />
                       </div>
         
                       <div class="md:col-span-2">
                         <label for="contact_number">Confirm Password</label>
-                        <input type="password" name="password_confirmation" id="password_confirmation" class="h-10 border mt-1 rounded px-4 w-full bg-gray-100" value="" placeholder="" />
+                        <input type="password" name="password_confirmation" id="password_confirmation" v-model="user.password_confirmation" class="h-10 border mt-1 rounded px-4 w-full bg-gray-100" placeholder="Confirm Password" />
                       </div>
       
                     <div class="md:col-span-3">
                       <label for="address">Address / Street</label>
-                      <input type="text" name="address" id="address" class="h-10 border mt-1 rounded px-4 w-full bg-gray-100" value="" placeholder="" />
+                      <input type="text" name="address" id="address" v-model="user.address" class="h-10 border mt-1 rounded px-4 w-full bg-gray-100" placeholder="Address" />
                     </div>
       
                     <div class="md:col-span-2">
                       <label for="contact_number">Phone</label>
-                      <input type="text" name="contact_number" id="contact_number" class="h-10 border mt-1 rounded px-4 w-full bg-gray-100" value="" placeholder="" />
+                      <input type="text" name="contact_number" id="contact_number" v-model="user.contact_number" class="h-10 border mt-1 rounded px-4 w-full bg-gray-100" placeholder="Phone" />
                     </div>
       
                     <div class="md:col-span-2">
                       <label for="country">Country / region</label>
                       <div class="h-10 bg-gray-100 flex border border-gray-200 rounded items-center mt-1">
-                        <input name="country" id="country" placeholder="Country" class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />                                               
+                        <input name="country" id="country" placeholder="Country" v-model="user.country" class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" />                                               
                       </div>
                     </div>
       
                     <div class="md:col-span-2">
                       <label for="state">State / province</label>
                       <div class="h-10 bg-gray-100 flex border border-gray-200 rounded items-center mt-1">
-                        <input name="state" id="state" placeholder="State" class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />                                                
+                        <input name="state" id="state" placeholder="State" v-model="user.state" class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" />                                                
                       </div>
                     </div>
       
                     <div class="md:col-span-1">
                       <label for="zipcode">Zipcode</label>
-                      <input type="text" name="zipcode" id="zipcode" class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-100" placeholder="" value="" />
+                      <input type="text" name="zipcode" id="zipcode" v-model="user.zipcode" class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-100" placeholder="" />
                     </div>
       
                     <div class="md:col-span-5">
@@ -166,11 +166,25 @@
             
                     <div class="md:col-span-5 text-right">
                       <div class="inline-flex items-end">
-                        <button class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded">Submit</button>
+                        <button :disabled="loading" type="submit" class="flex w-full justify-center rounded-md
+						bg-gray-800 px-3 py-1.5 text-sm font-semibold leading-6
+						text-white shadow-sm hover:bg-gray-700 focus-visible:outline 
+						focus-visible:outline-2 focus-visible:outline-offset-2
+						focus-visible:outline-gray-700" :class="{
+						'cursor-not-allowed': loading,
+						'hover:bg-gray-700': loading,
+						}">
+						<svg v-if="loading" class="animate-spin -ml-1 mr-3  h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+						fill="none" viewBox="0 0 24 24">
+						<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+						<path class="opacity-75" fill="currentColor"
+							d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+						</path>
+						</svg>
+						Create</button>
                       </div>
                     </div>
-      
-                  </div>
+				   </form>                  
                 </div>
               </div>
             </div>
@@ -239,6 +253,48 @@
 	
 </template>
 
+<script setup>
+	import store from "../store";
+	import { useRouter } from "vue-router";
+	import { ref } from "vue";
+	
+	const router = useRouter();
+
+	const user = {
+		name: "",
+		email: "",
+		password: "",
+		country: "",
+		state: "",
+		address: "",
+		zipcode: "",
+		contact_number: "",
+
+	};
+
+	const loading = ref(false);
+	const errors = ref({});
+
+	function CreateAccount(ev) {
+		ev.preventDefault();
+		loading.value = true;
+		store
+			.dispatch("CreateAccount", user)
+			.then(() => {
+			loading.value = false;
+			router.push({
+				name: "Dashboard",
+			});
+			})
+			.catch((error) => {
+			loading.value = false;
+			if (error.response.status === 422) {
+				errors.value = error.response.data.errors;
+			}
+			});
+	}
+
+</script>
 
 <script>
 // Burger menus

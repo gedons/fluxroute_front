@@ -105,26 +105,42 @@
                 </div> 
       
                 <div class="lg:col-span-2 py-4">
-                  <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
+                  <form @submit="login" class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
                           
                     <div class="md:col-span-5">
                       <label for="email">Email Address</label>
-                      <input type="text" name="email" id="email" class="h-10 border mt-1 rounded px-4 w-full bg-gray-100" value="" placeholder="email@domain.com" />
+                      <input type="text" name="email" id="email" v-model="user.email" class="h-10 border mt-1 rounded px-4 w-full bg-gray-100"  placeholder="email@domain.com" />
                     </div>
 
                     <div class="md:col-span-5">
                         <label for="password">Password</label>
-                        <input type="password" name="password" id="password" class="h-10 border mt-1 rounded px-4 w-full bg-gray-100" value="" placeholder="" />
+                        <input type="password" name="password" id="password" v-model="user.password" class="h-10 border mt-1 rounded px-4 w-full bg-gray-100"  placeholder="Password" />
                      </div>
                                                 
                   
                     <div class="md:col-span-5 text-right">
                       <div class="inline-flex items-end">
-                        <button class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded">Submit</button>
+						<button :disabled="loading" type="submit" class="flex w-full justify-center rounded-md
+						bg-gray-800 px-3 py-1.5 text-sm font-semibold leading-6
+						text-white shadow-sm hover:bg-gray-700 focus-visible:outline 
+						  focus-visible:outline-2 focus-visible:outline-offset-2
+						focus-visible:outline-gray-700" :class="{
+						  'cursor-not-allowed': loading,
+						  'hover:bg-gray-700': loading,
+						}">
+						<svg v-if="loading" class="animate-spin -ml-1 mr-3  h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+							fill="none" viewBox="0 0 24 24">
+							<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+							<path class="opacity-75" fill="currentColor"
+							d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+							</path>
+						</svg>
+						Login
+					</button>
                       </div>
                     </div>
       
-                  </div>
+				</form>
                 </div>
               </div>
             </div>
@@ -193,6 +209,57 @@
 	
 </template>
 
+
+<script setup>
+	import store from "../store";
+	import { useRouter } from "vue-router";
+	import { ref } from "vue";
+
+	const router = useRouter();
+
+	const user = {
+		email: "",
+		password: "",
+	};
+
+	let loading = ref(false);
+	const message = ref("");
+
+function login(ev) {
+  ev.preventDefault();
+
+  loading.value = true;
+  store
+    .dispatch("login", user)
+    .then(() => {
+      loading.value = false;
+      const userRole = store.getters.getUserRole
+
+	    // Redirect the user to their respective dashboard based on their role
+        switch (userRole) {
+          case "user":
+            router.push({ name: "Dashboard" });
+            break;
+          case "driver":
+            router.push({ name: "Driver" });
+            break;
+          case "admin":
+            router.push({ name: "Admin" });
+            break;
+          default:
+		 	 router.push({ name: "Login" });
+            break;
+        }
+    })
+    .catch((error) => {
+      loading.value = false;
+      if (error.response.status === 422) {
+        message.value = error.response.data.message;
+      }
+    });
+}
+
+</script>
 
 <script>
 // Burger menus

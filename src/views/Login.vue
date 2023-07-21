@@ -147,6 +147,7 @@
           </div>
           
         </div>
+	
     </div>
 
     	<!-- Foooter -->
@@ -213,7 +214,7 @@
 <script setup>
 	import store from "../store";
 	import { useRouter } from "vue-router";
-	import { ref } from "vue";
+	import { ref, computed } from "vue";
 
 	const router = useRouter();
 
@@ -223,7 +224,8 @@
 	};
 
 	let loading = ref(false);
-	const message = ref("");
+	const message = ref("");	
+
 
 function login(ev) {
   ev.preventDefault();
@@ -237,7 +239,7 @@ function login(ev) {
 
 	    // Redirect the user to their respective dashboard based on their role
         switch (userRole) {
-          case "user":
+          case "user":		  	
             router.push({ name: "Dashboard" });
             break;
           case "driver":

@@ -2,8 +2,22 @@ import { createRouter, createWebHistory } from "vue-router";
 import store from "../store";
 import Index from "../views/Index.vue";
 import Dashboard from "../views/User/Dashboard.vue";
+import Packages from "../views/User/Packages.vue";
+import PackageView from "../views/User/PackageView.vue";
+import Payments from "../views/User/Payments.vue";
+
 import Driver from "../views/Driver/Dashboard.vue";
+
 import Admin from "../views/Admin/Dashboard.vue";
+import AdminUsers from "../views/Admin/Users.vue";
+import AdminDrivers from "../views/Admin/Drivers.vue";
+import DriverView from "../views/Admin/DriverView.vue";
+import AdminPackages from "../views/Admin/Packages.vue";
+
+
+
+
+
 import Login from "../views/Login.vue";
 import CreateAccount from "../views/CreateAccount.vue";
 import UserLayout from "../components/UserLayout.vue";
@@ -39,6 +53,10 @@ const routes = [
         meta: { requiresAuth: true, requiredRole: "user" },
         children: [
             { path: "/dashboard", name: "Dashboard", component: Dashboard },
+            { path: "/dashboard/packages", name: "Packages", component: Packages },
+            { path: "/dashboard/package/create", name: "PackageCreate", component: PackageView },
+            { path: "/dashboard/package/:id", name: "PackageView", component: PackageView },
+            { path: "/dashboard/payments", name: "Payments", component: Payments },
            
         ]
     },
@@ -61,6 +79,13 @@ const routes = [
         meta: { requiresAuth: true, requiredRole: "admin" },
         children: [
             { path: "/admin/dashboard", name: "Admin", component: Admin },
+            { path: "/admin/users", name: "AdminUsers", component: AdminUsers },
+
+            { path: "/admin/drivers", name: "AdminDrivers", component: AdminDrivers },
+            { path: "/admin/drivers/create", name: "DriverCreate", component: DriverView },
+            { path: "/admin/driver/:id", name: "DriverView", component: DriverView },
+
+            { path: "/admin/packages", name: "AdminPackages", component: AdminPackages },
            
         ]
     },

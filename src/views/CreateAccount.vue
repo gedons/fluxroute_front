@@ -123,7 +123,7 @@
                       </div>
         
                       <div class="md:col-span-2">
-                        <label for="contact_number">Confirm Password</label>
+                        <label for="password_confirmation">Confirm Password</label>
                         <input type="password" name="password_confirmation" id="password_confirmation" v-model="user.password_confirmation" class="h-10 border mt-1 rounded px-4 w-full bg-gray-100" placeholder="Confirm Password" />
                       </div>
       

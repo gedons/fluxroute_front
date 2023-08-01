@@ -158,6 +158,19 @@
                                     </div>
                                   </div>
                                   <!-- /delivery address -->
+
+                                <!-- Driver User -->
+                                <div>
+                                  <label class="block text-sm font-medium text-gray-700">{{route.params.id ? "Driver Cannot Be Updated" : "Select Driver"}}</label>
+                                  <select v-model="model.driver_name"
+                                  :disabled="route.params.id"
+                                  class="mt-1 focus:ring-gray-500 focus:border-gray-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                  <option v-for="driveruser in driverUsers" :key="driveruser.name" :value="driveruser.name">
+                                    {{ driveruser.name }}
+                                  </option>                                                          
+                                  </select>
+                              </div>
+                                 <!-- /Driver User -->
                                   
                               
                               <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
@@ -204,6 +217,9 @@
     //get notifications 
     const notification = computed(() => store.state.notification);
 
+    store.dispatch("getDrivers");
+    const driverUsers = computed(() => store.state.drivers.data);
+
     // declare package variables 
     let model = ref({
         title: "",
@@ -211,7 +227,7 @@
         tracking_number: "",
         delivery_address: "",        
         special_instructions: "",
-        
+        driver_name: ""
     });
 
        // Watch current project  data change and when this happens we update local model

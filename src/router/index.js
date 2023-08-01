@@ -10,9 +10,11 @@ import Driver from "../views/Driver/Dashboard.vue";
 
 import Admin from "../views/Admin/Dashboard.vue";
 import AdminUsers from "../views/Admin/Users.vue";
+import UserView from "../views/Admin/UserView.vue";
 import AdminDrivers from "../views/Admin/Drivers.vue";
 import DriverView from "../views/Admin/DriverView.vue";
 import AdminPackages from "../views/Admin/Packages.vue";
+import AdminPackageView from "../views/Admin/PackageView.vue";
 
 
 
@@ -79,13 +81,16 @@ const routes = [
         meta: { requiresAuth: true, requiredRole: "admin" },
         children: [
             { path: "/admin/dashboard", name: "Admin", component: Admin },
+
             { path: "/admin/users", name: "AdminUsers", component: AdminUsers },
+            { path: "/admin/user/:id", name: "UserView", component: UserView },
 
             { path: "/admin/drivers", name: "AdminDrivers", component: AdminDrivers },
             { path: "/admin/drivers/create", name: "DriverCreate", component: DriverView },
             { path: "/admin/driver/:id", name: "DriverView", component: DriverView },
 
             { path: "/admin/packages", name: "AdminPackages", component: AdminPackages },
+            { path: "/admin/package/:id", name: "PackageView", component: AdminPackageView },
            
         ]
     },

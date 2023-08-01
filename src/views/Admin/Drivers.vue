@@ -45,7 +45,9 @@
                       <!-- <img :src="shipment.image_url" alt="img" class="w-full h-48 object-cover"/> -->
                       <h4 class="mt-4 text-lg font-bold">{{driver.name}}</h4>
                       <div v-html="driver.email" class="overflow-hidden flex-1"></div>
-    
+                      <div v-html="driver.vehicle_info" class="overflow-hidden flex-1 font-semibold"></div>
+                      <p>Location: {{ driver.country }},{{ driver.state }}</p>
+                      <div v-html="driver.address" class="overflow-hidden flex-1 font-semibold"></div>
                       <div class="flex justify-between items-center mt-3">
                         <router-link :to="{name: 'DriverView', params: {id: driver.id} }" class="flex py-2 px-4 border border-transparent text-sm rounded-md text-white bg-gray-900 hover:bg-gray-800 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
@@ -54,9 +56,9 @@
                           Edit
                         </router-link>
                         <div class="flex items-center">
-                           <!-- <TButton :href="project.url" circle link target="_blank">
-                            <LinkIcon class="w-5 h-5" />
-                          </TButton>  -->
+                          <p>
+                            Licence: <span class="text-sm font-semibold">{{ driver.driver_license_number }}</span>                            
+                          </p>                   
                           <button v-if="driver.id" type="button" @click="deleteDriver(driver)" class="h-8 w-8 flex items-center justify-center rounded-full border border-transparent text-sm text-red-500 focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 -mt-1 inline-block">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
@@ -109,7 +111,7 @@
 
 <script setup>
     import store from "../../store";    
-    import { computed } from "vue";
+    import { ref, computed } from "vue";
     import { LinkIcon } from '@heroicons/vue/24/outline';
 
     const drivers = computed(() => store.state.drivers);
@@ -118,7 +120,7 @@
     const notification = computed(() => store.state.notification);
 
     // Get shipment loading state, which only changes when we fetch shipment from backend
-    const driverLoading = computed(() => store.state.currentDriver.loading);
+    const driverLoading = computed(() => store.state.currentDriver.loading);    
 
     store.dispatch("getDrivers");
 
@@ -126,6 +128,7 @@
       type: "success",
       message: "All Drivers"
     });
+
 
     function deleteDriver(driver) {
         if (confirm(`Are you sure you want to delete this driver? Operation can't be undone!!`)

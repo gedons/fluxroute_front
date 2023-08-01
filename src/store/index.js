@@ -31,6 +31,15 @@ const store = createStore({
           links: [],
           data: []
         },
+        currentAlluser: {
+          data: [],
+          loading: false,
+        },
+        allusers: {
+          loading: false,
+          links: [],
+          data: []
+        },
         //end admin driver
     },
     getters:{
@@ -76,7 +85,8 @@ const store = createStore({
        
              return response;
            },
-           getPackage({ commit }, id) {
+
+          getPackage({ commit }, id) {
             commit("setCurrentShipmentLoading", true);
             return axiosClient
               .get(`/shipment/${id}`)
@@ -90,6 +100,7 @@ const store = createStore({
                 throw err;
               });
           },
+
           getPackages({ commit },  {url = null} = {}) {
             commit('setShipmentsLoading', true)
             url = url || "/shipment";
@@ -107,7 +118,7 @@ const store = createStore({
             });
           },
 
-          //admin driver actions
+          //admin actions
           saveDriver({ commit, dispatch }, driver) {
        
              let response;
@@ -158,7 +169,64 @@ const store = createStore({
               return res;
             });
           },
-          //end admin driver
+
+          getAlluser({ commit }, id) {
+            commit("setCurrentAlluserLoading", true);
+            return axiosClient
+              .get(`/alluser/${id}`)
+              .then((res) => {
+                commit("setCurrentAlluser", res.data);
+                commit("setCurrentAlluserLoading", false);
+                return res;
+              })
+              .catch((err) => {
+                commit("setCurrentAlluserLoading", false);
+                throw err;
+              });
+          },
+          getAllusers({ commit },  {url = null} = {}) {
+            commit('setAlluserLoading', true)
+            url = url || "/alluser";
+            return axiosClient.get(url).then((res) => {
+              commit('setAlluserLoading', false)
+              commit("setAllusers", res.data);
+              return res;
+            });
+          },
+          deleteAlluser({ dispatch }, id) {
+            return axiosClient.delete(`/alluser/${id}`)
+            .then((res) => {
+              dispatch('getAllusers')
+              return res;
+            });
+          },
+
+          getAdminpackages({ commit },  {url = null} = {}) {
+            commit('setShipmentsLoading', true)
+            url = url || "/adminpackage";
+            return axiosClient.get(url).then((res) => {
+              commit('setShipmentsLoading', false)
+              commit("setShipments", res.data);
+              return res;
+            });
+          },
+
+          getAdminpackage({ commit }, id) {
+            commit("setCurrentShipmentLoading", true);
+            return axiosClient
+              .get(`/adminpackage/${id}`)
+              .then((res) => {
+                commit("setCurrentShipment", res.data);
+                commit("setCurrentShipmentLoading", false);
+                return res;
+              })
+              .catch((err) => {
+                commit("setCurrentShipmentLoading", false);
+                throw err;
+              });
+          },
+          
+          //end admin 
     },
     mutations:{
         setUser: (state, user) => {
@@ -202,6 +270,20 @@ const store = createStore({
           },
           setDriversLoading: (state, loading) => {
             state.drivers.loading = loading;
+          },
+
+          setCurrentAlluser: (state, alluser) => {
+            state.currentAlluser.data = alluser.data;
+          },
+          setCurrentAlluserLoading: (state, loading) => {
+            state.currentAlluser.loading = loading;
+          },
+          setAllusers: (state, allusers) => {
+            state.allusers.links = allusers.meta.links;
+            state.allusers.data = allusers.data;
+          },
+          setAlluserLoading: (state, loading) => {
+            state.allusers.loading = loading;
           },
           //end admin driver
     },

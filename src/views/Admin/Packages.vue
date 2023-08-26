@@ -65,7 +65,8 @@
                                    {{allshipment.title}}
                                 </th>
                                 <td class="px-6 py-4 text-gray-900 whitespace-nowrap font-semibold">
-                                    {{allshipment.user.name}}
+                                    {{allshipment.user.name}}<br/>
+                                    <span class="text-sm text-gray-500">{{allshipment.user.email}}</span>
                                 </td>
                                 <td class="px-6 py-4 text-gray-900 whitespace-nowrap font-semibold">
                                     {{allshipment.tracking_number}}
@@ -76,8 +77,8 @@
                                 <td class="px-6 py-4 text-gray-900 whitespace-nowrap font-semibold">
                                     {{allshipment.driver_name}}
                                 </td>
-                                <td class="px-6 py-4 text-gray-900 whitespace-nowrap font-semibold">
-                                    <router-link :to="{name: 'PackageView', params: {id: allshipment.id} }" class=" py-2
+                                <td v-if="allshipment.delivery_status === 'pending'" class="px-6 py-4 text-gray-900 whitespace-nowrap font-semibold">
+                                   <button @click="updateDeliveryStatus(allshipment.id)" class="
                                     px-3
                                     font-semibold
                                     focus:outline-none
@@ -86,7 +87,22 @@
                                     border
                                     text-gray-200
                                     hover:text-white
-                                    bg-gray-800">View</router-link>
+                                    bg-gray-800">Not Delivered</button>
+                                </td>
+                                <td v-else class="px-6 py-4 text-gray-900 whitespace-nowrap font-semibold">
+                                   <button :disabled="allshipment.delivery_status === 'finished'" class="
+                                    px-3
+                                    font-semibold
+                                    focus:outline-none
+                                    leading-6 
+                                    rounded
+                                    border
+                                    text-gray-200
+                                    hover:text-white
+                                    bg-green-800" :class="{
+                                        'cursor-not-allowed': allshipment.delivery_status === 'finished',
+                                        'hover:bg-green-700': allshipment.delivery_status === 'finished',
+                                      }">Delivered</button>
                                 </td>
                             </tr>
     
@@ -102,8 +118,9 @@
     import store from "../../store";    
     import { ref, computed } from "vue";
     import { LinkIcon } from '@heroicons/vue/24/outline';
+    import axios from 'axios';
 
-    const allshipments = computed(() => store.state.shipments);
+    const allshipments = computed(() => store.state.products);
     
     //get notifications 
     const notification = computed(() => store.state.notification);
@@ -119,6 +136,16 @@
       type: "success",
       message: "All Packages"
     });
+    
+    function updateDeliveryStatus (shipmentId) {       
+        store.dispatch('updateDeliveryStatus', shipmentId).then(() => {
+            store.commit("notify", {
+            type: "success",
+            message: "Delivery status updated successfully",
+            });    
+        });
+       
+    };
 
    
 </script>

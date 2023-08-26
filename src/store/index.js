@@ -40,6 +40,15 @@ const store = createStore({
           links: [],
           data: []
         },
+        products: {
+          loading: false,
+          links: [],
+          data: []
+        },
+        currentAdminProduct: {
+          data: {},
+          loading: false,
+        },
         //end admin driver
     },
     getters:{
@@ -202,31 +211,39 @@ const store = createStore({
           },
 
           getAdminpackages({ commit },  {url = null} = {}) {
-            commit('setShipmentsLoading', true)
+            commit('setAdminShipmentsLoading', true)
             url = url || "/adminpackage";
             return axiosClient.get(url).then((res) => {
-              commit('setShipmentsLoading', false)
-              commit("setShipments", res.data);
+              commit('setAdminShipmentsLoading', false)
+              commit("setAdminShipments", res.data);
               return res;
             });
           },
 
           getAdminpackage({ commit }, id) {
-            commit("setCurrentShipmentLoading", true);
+            commit("setCurrentAdminShipmentLoading", true);
             return axiosClient
               .get(`/adminpackage/${id}`)
               .then((res) => {
-                commit("setCurrentShipment", res.data);
-                commit("setCurrentShipmentLoading", false);
+                commit("setCurrentAdminShipment", res.data);
+                commit("setCurrentAdminShipmentLoading", false);
                 return res;
               })
               .catch((err) => {
-                commit("setCurrentShipmentLoading", false);
+                commit("setCurrentAdminShipmentLoading", false);
                 throw err;
               });
           },
-          
-          //end admin 
+
+          updateDeliveryStatus({ dispatch }, id) {
+            return axiosClient.put(`/adminpackage/${id}/update-status`)
+            .then((res) => {
+              dispatch('getAdminpackages')
+              return res;
+            });
+          },
+
+        
     },
     mutations:{
         setUser: (state, user) => {
@@ -284,6 +301,20 @@ const store = createStore({
           },
           setAlluserLoading: (state, loading) => {
             state.allusers.loading = loading;
+          },
+
+          setCurrentAdminShipment: (state, product) => {
+            state.currentAdminProduct.data = product.data;
+          },
+          setCurrentAdminShipmentLoading: (state, loading) => {
+            state.currentAdminProduct.loading = loading;
+          },
+          setAdminShipments: (state, products) => {
+            state.products.links = products.meta.links;
+            state.products.data = products.data;
+          },
+          setAdminShipmentsLoading: (state, loading) => {
+            state.products.loading = loading;
           },
           //end admin driver
     },

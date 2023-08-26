@@ -23,14 +23,16 @@
     </header>
 
     <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-        <div v-if="allUserLoading"  class="flex justify-center">
+        <div v-if="ShipmentLoading"  class="flex justify-center">
             <svg  class="animate-spin text-center  h-8 w-8 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
           </div>
 
-        <div v-else class="px-6 pt-6 2xl:container animate-fade-in-down" :style="{animationDelay: `${1 * 0.1}s`}">
+          <div v-else>{{products}}</div>
+
+        <!-- <div v-else class="px-6 pt-6 2xl:container animate-fade-in-down" :style="{animationDelay: `${1 * 0.1}s`}">
             <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 <div class="md:col-span-2 lg:col-span-1">
                     <div class="h-full py-6 px-6 rounded-xl border border-gray-400 bg-white">
@@ -138,7 +140,7 @@
                   {{ notification.message }}
               </div> 
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -155,9 +157,9 @@ const route = useRoute();
 const notification = computed(() => store.state.notification);
 
 // Get  loading state, which only changes when we fetch users from backend
-const ShipmentLoading = computed(() => store.state.currentShipment.loading);
+const ShipmentLoading = computed(() => store.state.currentAdminProduct.loading);
 
-const ShipmentUsers = computed(() => store.state.allusers.data);
+const products = computed(() => store.state.currentAdminProduct.data);
 
 // declare driver variables 
 let model = ref({
@@ -172,7 +174,7 @@ let model = ref({
 
 // Watch current project  data change and when this happens we update local model
 watch(
-    () => store.state.currentShipment.data,
+    () => store.state.currentAdminProduct.data,
     (newVal, oldVal) => {
         model.value = {
             ...JSON.parse(JSON.stringify(newVal)),

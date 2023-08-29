@@ -107,8 +107,23 @@
 			  <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl"> FluxRoute: Your Path to<br />Seamless Deliveries!.</h2>
 			  <p class="mt-6 text-lg leading-8 text-gray-300">Enter your tracking code to get more information about your package.</p>
 			  <div class="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
-				<input v-model="trackingNumber" required="" class="min-w-0 flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" placeholder="Enter Tracking Code" />
-				<button @click="trackPackage" class="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">Track</button>
+				<input v-model="trackingNumber" required="" class="min-w-0 flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" placeholder="Enter Tracking Code" :class="{
+					'cursor-not-allowed': loading,		
+					'disabled': loading,			
+				  }"/>
+				<button :disabled="loading" @click="trackPackage" class="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white" :class="{
+					'cursor-not-allowed': loading,					
+				  }">				  
+				  Track
+				</button>
+				<svg v-if="loading" class="animate-spin ml-1  h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+						fill="none" viewBox="0 0 24 24">
+						<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+						<path class="opacity-75" fill="currentColor"
+						d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+						</path>
+				  </svg> 
+				  
 			  </div>
 			</div>
 			<div class="relative mt-16 h-80 lg:mt-8">
@@ -183,18 +198,27 @@
 import { ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import {useToast} from 'vue-toast-notification';
 
 const trackingNumber = ref('');
 const store = useStore();
 const router = useRouter();
+const loading = ref(false);
+const toast = useToast();
 
 const trackPackage = () => {
+  loading.value = true;
   store.dispatch('trackPackage', trackingNumber.value)
     .then(() => {
+		toast.success('Package found', { duration: 3000 });
       router.push({ name: 'PackageDetails', params: { trackingNumber: trackingNumber.value } });
     })
     .catch(error => {
       console.error(error);
+	  toast.error('Package not found', { duration: 3000 });
+    }) 
+	.finally(() => {
+      loading.value = false;
     });
 };
 </script>

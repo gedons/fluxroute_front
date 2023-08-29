@@ -7,6 +7,9 @@ const store = createStore({
             data:{},
             token: sessionStorage.getItem("TOKEN"),
         }, 
+        trackingNumber: '',
+        shipment: {},
+
         notification: {
             show: false,
             type: null,
@@ -64,6 +67,17 @@ const store = createStore({
                 return data;
               })
           },  
+
+          trackPackage({ commit }, trackingNumber) {
+            return axiosClient.get(`/package/${trackingNumber}`)
+              .then(response => {
+                commit('setShipment', response.data);
+              })
+              .catch(error => {
+                console.log(error);
+                throw error;
+              });
+          },
 
           login({commit}, user) {
             return axiosClient.post('/login', user)
@@ -249,6 +263,12 @@ const store = createStore({
         setUser: (state, user) => {
             state.user.data = user;
           },
+          setTrackingNumber(state, trackingNumber) {
+            state.trackingNumber = trackingNumber;
+        },
+          setShipment(state, shipment) {
+            state.shipment = shipment;
+          },   
           setToken: (state, token) => {
             state.user.token = token;
             sessionStorage.setItem('TOKEN', token);

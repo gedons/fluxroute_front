@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import store from "../store";
 import Index from "../views/Index.vue";
+import PackageDetails from "../views/PackageDetails.vue";
 import Dashboard from "../views/User/Dashboard.vue";
 import Packages from "../views/User/Packages.vue";
 import PackageView from "../views/User/PackageView.vue";
@@ -15,9 +16,6 @@ import AdminDrivers from "../views/Admin/Drivers.vue";
 import DriverView from "../views/Admin/DriverView.vue";
 import AdminPackages from "../views/Admin/Packages.vue";
 import AdminPackageView from "../views/Admin/PackageView.vue";
-
-
-
 
 
 import Login from "../views/Login.vue";
@@ -46,6 +44,12 @@ const routes = [
         path: "/CreateAccount",
         name: 'CreateAccount',
         component: CreateAccount
+    },
+
+    {
+        path: "/PackageDetails/:trackingNumber",
+        name: 'PackageDetails',
+        component: PackageDetails
     },
 
     {

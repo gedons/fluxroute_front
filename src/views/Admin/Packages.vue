@@ -137,7 +137,7 @@
       message: "All Packages"
     });
     
-    function updateDeliveryStatus (shipmentId) {       
+    const updateDeliveryStatus = (shipmentId) => {       
         store.dispatch('updateDeliveryStatus', shipmentId).then(() => {
             store.commit("notify", {
             type: "success",

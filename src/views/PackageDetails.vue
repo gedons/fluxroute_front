@@ -131,6 +131,7 @@
 					/>
 				</center>
 				<p class="mt-8 text-gray-500 font-semibold">Package Destination:</p> <span class="text-gray-500">{{packageDetail.delivery_address}}</span>
+				<PackageMap />
 				<p class="mt-8 text-gray-500 font-semibold">
 					Package Status:
 				</p> 
@@ -221,6 +222,7 @@ import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import moment from 'moment';
+import PackageMap from '../components/PackageMap.vue';
 
 const route = useRoute();
 const store = useStore();

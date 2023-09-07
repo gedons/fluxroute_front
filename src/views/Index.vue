@@ -127,7 +127,7 @@
 			  </div>
 			</div>
 			<div class="relative mt-16 h-80 lg:mt-8">
-			  <img class="absolute left-0 top-0 w-[57rem] max-w-none rounded-md bg-white/5 ring-1 ring-white/10" src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png" alt="App screenshot" width="1824" height="1080" />
+			  <img class="absolute left-0 top-7 w-[30rem] max-w-none rounded-md bg-white/5 ring-1 ring-white/10" src="https://images.unsplash.com/photo-1541544181051-e46607bc22a4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="App screenshot" width="1824" height="" />
 			</div>
 		  </div>
 		</div>

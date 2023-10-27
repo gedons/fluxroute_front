@@ -5,7 +5,7 @@ import router from "./router";
 
 const axiosClient = axios.create({
 //   baseURL: `${import.meta.env.VITE_API_BASE_URL}/api`
-  baseURL: `https://fluxroute.vercel.app/api`
+  baseURL: `https://fluxroute-api.vercel.app/api`
 })
 
 axiosClient.interceptors.request.use(config => {

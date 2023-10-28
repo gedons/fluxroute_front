@@ -265,3 +265,59 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
+<style scoped>
+	@media (max-width: 767px) {
+  .bg-white {
+    margin-top: 0;
+  }
+
+  .mx-auto.max-w-7xl {
+    max-width: 100%;
+  }
+
+  .relative.isolate.overflow-hidden.bg-gray-900.font-semibold.px-6.pt-16.shadow-2xl.sm:rounded-3xl.sm:px-16.md:pt-24.lg:flex.lg:gap-x-20.lg:px-24.lg:pt-0 {
+    padding: 0;
+    background-image: none;
+  }
+
+  .svg {
+    display: none;
+  }
+
+  .mx-auto.max-w-md.text-center.lg:mx-0.lg:flex-auto.lg:py-32.lg:text-left {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+
+  .h2.text-3xl.font-bold.tracking-tight.text-white.sm:text-4xl {
+    font-size: 2rem;
+  }
+
+  .mt-6.text-lg.leading-8.text-gray-300 {
+    font-size: 1rem;
+  }
+
+  .mt-10.flex.items-center.justify-center.gap-x-6.lg:justify-start {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .min-w-0.flex-auto.rounded-md.border-0.bg-white/5.px-3.5.py-2.text-white.shadow-sm.ring-1.ring-inset.ring-white/10.focus:ring-2.focus:ring-inset.focus:ring-indigo-500.sm:text-sm.sm:leading-6 {
+    width: 100%;
+  }
+
+  .rounded-md.bg-white.px-3.5.py-2.5.text-sm.font-semibold.text-gray-900.shadow-sm.hover:bg-gray-100.focus-visible:outline.focus-visible:outline-2.focus-visible:outline-offset-2.focus-visible:outline-white {
+    width: 100%;
+  }
+
+  .mt-16.h-80.lg:mt-8 {
+    height: auto;
+  }
+
+  .absolute.left-0.top-7.w-[30rem].max-w-none.rounded-md.bg-white/5.ring-1.ring-white/10 {
+    display: none;
+  }
+}
+
+</style>
